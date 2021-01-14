@@ -1,0 +1,40 @@
+{
+    "name": "teamones/fdd",
+    "description": "继承bonza/fdd，支持PHP7.2语法，法大大接口类库",
+    "type": "library",
+    "keywords": [
+        "fadada",
+        "fadada-sdk",
+        "fadada3.0",
+        "sdk"
+    ],
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "weijer",
+            "email": "weiwei163@foxmail.com"
+        }
+    ],
+    "minimum-stability": "stable",
+    "require": {
+        "php": ">=7.2.0",
+        "ext-mbstring": "*",
+        "ext-curl": "*",
+        "ext-openssl": "*",
+        "ext-json": "*"
+    },
+    "autoload": {
+        "psr-4": {
+            "bonza\\fdd\\": "src/"
+        }
+    },
+    "extra": {
+        "branch-alias": {
+            "dev-master": "1.0.3-dev"
+        }
+    },
+    "require-dev": {
+        "phpunit/phpunit": "^6.2",
+        "mockery/mockery": "^1.2"
+    }
+}
