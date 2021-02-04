@@ -774,9 +774,27 @@ class FddApi3 implements FddInterface
     {
         $timestamp = $data['timestamp'] ?? "";
         $signNeedCheck = $data['sign'] ?? "";
-        $excludedData = $this->excludeCommonParams($data);
-        $this->timestamp = $timestamp;
-        $sign = $this->getMsgDigest($excludedData);
+        $authenticationType = $data['authenticationType'] ?? "";
+        $certStatus = $data['certStatus'] ?? "";
+        $customerId = $data['customerId'] ?? "";
+        $serialNo = $data['serialNo'] ?? "";
+        $status = $data['status'] ?? "";
+        $statusDesc = $data['statusDesc'] ?? "";
+
+
+        $sign = base64_encode(
+            strtoupper(
+                sha1(
+                    $this->appId
+                    . strtoupper(md5($timestamp))
+                    . strtoupper(
+                        sha1(
+                            $this->appSecret . $authenticationType . $certStatus . $customerId . $serialNo . $status . $statusDesc
+                        )
+                    )
+                )
+            )
+        );
         return strcmp($signNeedCheck, $sign) === 0;
     }
 
