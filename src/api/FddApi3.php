@@ -774,9 +774,27 @@ class FddApi3 implements FddInterface
     {
         $timestamp = $data['timestamp'] ?? "";
         $signNeedCheck = $data['sign'] ?? "";
-        $excludedData = $this->excludeCommonParams($data);
-        $this->timestamp = $timestamp;
-        $sign = $this->getMsgDigest($excludedData);
+        $authenticationType = $data['authenticationType'] ?? "";
+        $certStatus = $data['certStatus'] ?? "";
+        $customerId = $data['customerId'] ?? "";
+        $serialNo = $data['serialNo'] ?? "";
+        $status = $data['status'] ?? "";
+        $statusDesc = $data['statusDesc'] ?? "";
+
+
+        $sign = base64_encode(
+            strtoupper(
+                sha1(
+                    $this->appId
+                    . strtoupper(md5($timestamp))
+                    . strtoupper(
+                        sha1(
+                            $this->appSecret . $authenticationType . $certStatus . $customerId . $serialNo . $status . $statusDesc
+                        )
+                    )
+                )
+            )
+        );
         return strcmp($signNeedCheck, $sign) === 0;
     }
 
@@ -815,5 +833,39 @@ class FddApi3 implements FddInterface
             $flag = false;
         }
         return $flag;
+    }
+
+    /**
+     * 授权
+     * @param $transaction_id
+     * @param $contract_id
+     * @param $customer_id
+     * @param string $return_url
+     * @param string $notify_url
+     * @return string
+     */
+    public function beforeAuthSign($transaction_id, $contract_id, $customer_id, $return_url, $notify_url = '')
+    {
+        $personalParams = compact('transaction_id', 'customer_id', 'return_url', 'notify_url', 'contract_id');
+        $personalParams['auth_type'] = 1;
+
+
+        $msg_digest = base64_encode(
+            strtoupper(
+                sha1(
+                    $this->appId
+                    . strtoupper(md5($transaction_id . (string)$this->timestamp))
+                    . strtoupper(
+                        sha1(
+                            $this->appSecret . $customer_id
+                        )
+                    )
+                )
+            )
+        );
+
+
+        $params = array_merge($this->getCommonParams($msg_digest), $personalParams);
+        return $this->baseUrl . 'before_authsign' . '.api?' . http_build_query($params);
     }
 }
