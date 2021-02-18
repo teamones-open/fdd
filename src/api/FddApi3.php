@@ -868,4 +868,20 @@ class FddApi3 implements FddInterface
         $params = array_merge($this->getCommonParams($msg_digest), $personalParams);
         return $this->baseUrl . 'before_authsign' . '.api?' . http_build_query($params);
     }
+
+    /**
+     * 授权自动签署状态查询
+     * @param $customerId
+     * @return array
+     */
+    public function beforeAuthSignStatus($customerId)
+    {
+        $personalParams = [
+            'customer_id' => $customerId,
+        ];
+        $msg_digest = $this->getMsgDigest($personalParams);
+        $params = array_merge($this->getCommonParams($msg_digest), $personalParams);
+        return $this->curl->sendRequest($this->baseUrl . 'get_auth_status' . '.api', 'post', $params);
+    }
+
 }
