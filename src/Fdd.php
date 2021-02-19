@@ -43,7 +43,7 @@ use bonza\fdd\api\FddApi3;
  * @method contractStatus($contractId): array 合同状态查询
  * @method getTemplateKeys($templateId): array 查看合同模板可用keys
  * @method beforeAuthSign($transaction_id, $contract_id, $customer_id, $return_url = '', $notify_url = ''): string
- *
+ * @method beforeAuthSignStatus($fddCustomerId): array 授权自动签署状态查询
  */
 class Fdd
 {
