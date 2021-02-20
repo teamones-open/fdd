@@ -507,7 +507,7 @@ class FddApi3 implements FddInterface
      * @param string $sign_keyword
      * @return string
      */
-    public function extSign($transaction_id, $contract_id, $customer_id, $doc_title, $return_url = '', $sign_keyword = '', $notify_url = ''): string
+    public function extSign($transaction_id, $contract_id, $customer_id, $doc_title, $return_url = '', $sign_keyword = '', $notify_url = '', $outh_customer_id = ''): string
     {
         $msg_digest = base64_encode(
             strtoupper(
@@ -532,6 +532,9 @@ class FddApi3 implements FddInterface
                 'notify_url' => $notify_url,
                 'sign_keyword' => $sign_keyword,
             ];
+        if (!empty($outh_customer_id)) {
+            $params['outh_customer_id'] = $outh_customer_id;
+        }
         return $this->baseUrl . 'extsign' . '.api' . '?' . http_build_query($params);
     }
 
