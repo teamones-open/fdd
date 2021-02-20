@@ -807,8 +807,22 @@ class FddApi3 implements FddInterface
      */
     public function authorization($companyId, $personId, $operateType = 1)
     {
-        $personalParams = compact('companyId', 'personId', 'operateType');
-        $msg_digest = $this->getMsgDigest($personalParams);
+        $personalParams = [
+            'company_id' => $companyId,
+            'person_id' => $personId,
+            'operate_type' => $operateType
+        ];
+        $msg_digest = base64_encode(
+            strtoupper(
+                sha1(
+                    $this->appId
+                    . strtoupper(md5($this->timestamp))
+                    . strtoupper(
+                        sha1($this->appSecret . $companyId . $personId . $operateType)
+                    )
+                )
+            )
+        );
         $params = array_merge($this->getCommonParams($msg_digest), $personalParams);
         return $this->curl->sendRequest($this->baseUrl . 'authorization' . '.api', 'post', $params);
     }
