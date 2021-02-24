@@ -20,14 +20,14 @@ class Curl
      * @param string $data 传入参数
      * @return array $temp 返回数组参数
      */
-    public function sendRequest($url, $method = 'post', $data = ''):array
+    public function sendRequest($url, $method = 'post', $data = '', $timeout = 10): array
     {
         $ch = curl_init(); //初始化
         $headers = ['Accept-Charset: utf-8'];
         //设置URL和相应的选项
         curl_setopt($ch, CURLOPT_URL, $url); //指定请求的URL
         curl_setopt($ch, CURLOPT_CUSTOMREQUEST, strtoupper($method)); //提交方式
-        curl_setopt($ch, CURLOPT_BINARYTRANSFER,true);//二进制流
+        curl_setopt($ch, CURLOPT_BINARYTRANSFER, true);//二进制流
         curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, FALSE); //不验证SSL
         curl_setopt($ch, CURLOPT_SSL_VERIFYHOST, FALSE); //不验证SSL
         curl_setopt($ch, CURLOPT_HTTPHEADER, $headers); //设置HTTP头字段的数组
@@ -36,8 +36,9 @@ class Curl
         curl_setopt($ch, CURLOPT_AUTOREFERER, 1); //自动设置header中的Referer:信息
         curl_setopt($ch, CURLOPT_POSTFIELDS, $data); //提交数值
         curl_setopt($ch, CURLOPT_RETURNTRANSFER, true); //是否输出到屏幕上,true不直接输出
+        curl_setopt($ch, CURLOPT_TIMEOUT, $timeout);
         $temp = curl_exec($ch); //执行并获取结果
-        $temp = json_decode($temp,true);
+        $temp = json_decode($temp, true);
         if (function_exists('json_last_error') && $errMsg = json_last_error()) {
             static::handleJsonError($errMsg);
         } elseif ($temp === null && $data !== 'null') {
