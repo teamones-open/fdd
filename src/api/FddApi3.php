@@ -94,14 +94,15 @@ class FddApi3 implements FddInterface
      * @param array $extraParam 额外参数
      * @param int $page_modify 是否允许用户页面修改1 允许，2 不允许
      * @param int $company_principal_type 企业负责人身份 :1. 法人，2. 代理人
+     * @param array $excludeMsgDigestParam 不进行计算签名参数
      * @return array
      */
-    public function getCompanyVerifyUrl($customer_id, $notify_url, $extraParam = [], $page_modify = 1, $company_principal_type = 1): array
+    public function getCompanyVerifyUrl($customer_id, $notify_url, $extraParam = [], $page_modify = 1, $company_principal_type = 1, $excludeMsgDigestParam = []): array
     {
         $personalParams = compact('company_principal_type', 'customer_id', 'notify_url', 'page_modify');
         $personalParams = array_merge($personalParams, $extraParam);
         $msg_digest = $this->getMsgDigest($personalParams);
-        $params = array_merge($this->getCommonParams($msg_digest), $personalParams);
+        $params = array_merge($this->getCommonParams($msg_digest), $personalParams, $excludeMsgDigestParam);
         return $this->curl->sendRequest($this->baseUrl . 'get_company_verify_url' . '.api', 'post', $params);
     }
 
