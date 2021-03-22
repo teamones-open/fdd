@@ -212,6 +212,19 @@ class FddApi3 implements FddInterface
     }
 
     /**
+     * 查询证书信息
+     * @param $customerId
+     * @return array
+     */
+    public function queryCert($customerId) : array
+    {
+        $customerParams = compact('customerId');
+        $msg_digest = $this->getMsgDigest($customerParams);
+        $params = array_merge($this->getCommonParams($msg_digest), $customerParams);
+        return $this->curl->sendRequest($this->baseUrl . 'query_cert' . '.api', 'post', $params);
+    }
+
+    /**
      *
      * 对企业信息实名存证
      * @param string $transaction_id 交易号
