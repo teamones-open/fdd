@@ -30,6 +30,7 @@ Interface FddInterface
     public function downLoadContract(string $contract_id);/* 合同下载 */
     public function contractFiling($contract_id): array;/*合同归档*/
     public function findPersonCertInfo($verified_serialno): array;/*查询个人实名认证信息*/
+    public function queryCert($customerId): array;/*查询证书信息*/
     public function findCompanyCertInfo($verified_serialno): array;/*查询企业实名认证信息*/
     public function getFile($uuid): array;/*通过 uuid 下载文件*/
     /*实名信息哈希存证*/

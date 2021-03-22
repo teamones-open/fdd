@@ -30,6 +30,7 @@ use bonza\fdd\api\FddApi3;
  * @method downLoadContract(...$string): array 合同下载
  * @method contractFiling(...$string): array 合同归档
  * @method findPersonCertInfo(...$string): array 查询个人实名认证信息
+ * @method queryCert(...$string): array 查询证书信息
  * @method findCompanyCertInfo(...$string): array 查询企业实名认证信息
  * @method getFile(...$string): array 通过 uuid 下载文件
  * @method hashDeposit(...$string): array 实名信息哈希存证
